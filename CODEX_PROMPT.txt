@@ -1,0 +1,22 @@
+You are checking a Computer Networks Semester 5 Practical 10 project.
+
+Project: Cloud-Based File Sharing System using Flask.
+
+DO NOT redesign or overengineer it.
+
+Tasks:
+1. Inspect all existing files.
+2. Run the application.
+3. Fix only real errors that prevent:
+   - homepage loading,
+   - upload,
+   - file listing,
+   - download,
+   - delete,
+   - 20 MB upload validation.
+4. Keep Python + Flask + HTML + CSS.
+5. Do not add React, Node.js, Docker, database, authentication, or unnecessary packages.
+6. Confirm that app.py runs with host="0.0.0.0" and port 5000.
+7. Confirm secure_filename is used.
+8. Keep the UI clean and professional.
+9. After fixing, tell me the exact terminal commands I should run to demonstrate it tomorrow.

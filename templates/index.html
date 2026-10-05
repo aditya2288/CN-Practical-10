@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud-Based File Sharing System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="page-shell">
+        <header class="hero">
+            <div class="hero-icon">☁</div>
+            <div>
+                <p class="eyebrow">COMPUTER NETWORKS • PRACTICAL 10</p>
+                <h1>Cloud-Based File Sharing System</h1>
+                <p class="subtitle">Upload, store, access and share files through a client-server web application.</p>
+            </div>
+        </header>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="messages">
+                    {% for category, message in messages %}
+                        <div class="message {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <section class="grid">
+            <div class="card upload-card">
+                <div class="section-heading">
+                    <div>
+                        <p class="section-kicker">UPLOAD</p>
+                        <h2>Send a file to the server</h2>
+                    </div>
+                    <span class="badge">Max 20 MB</span>
+                </div>
+
+                <form action="{{ url_for('upload_file') }}" method="POST" enctype="multipart/form-data" class="upload-form">
+                    <label for="file" class="drop-zone">
+                        <span class="drop-icon">⇧</span>
+                        <span class="drop-title">Choose a file</span>
+                        <span class="drop-subtitle">It will be transferred using an HTTP POST request.</span>
+                        <input id="file" type="file" name="file" required>
+                    </label>
+                    <button type="submit" class="btn primary">Upload File</button>
+                </form>
+            </div>
+
+            <div class="card network-card">
+                <p class="section-kicker">NETWORKING DETAILS</p>
+                <h2>How this system communicates</h2>
+                <div class="network-list">
+                    <div><span>Architecture</span><strong>Client–Server</strong></div>
+                    <div><span>Application Protocol</span><strong>HTTP</strong></div>
+                    <div><span>Transport Protocol</span><strong>TCP</strong></div>
+                    <div><span>Network Protocol</span><strong>IP</strong></div>
+                    <div><span>Server</span><strong>Flask</strong></div>
+                    <div><span>Storage</span><strong>Server-side Files</strong></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="card files-card">
+            <div class="section-heading">
+                <div>
+                    <p class="section-kicker">SERVER STORAGE</p>
+                    <h2>Uploaded Files</h2>
+                </div>
+                <span class="badge">{{ files|length }} file{% if files|length != 1 %}s{% endif %}</span>
+            </div>
+
+            {% if files %}
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>File Name</th>
+                                <th>Size</th>
+                                <th>Uploaded</th>
+                                <th class="actions-col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for file in files %}
+                            <tr>
+                                <td>
+                                    <div class="file-name">
+                                        <span class="file-icon">▣</span>
+                                        <span>{{ file.name }}</span>
+                                    </div>
+                                </td>
+                                <td>{{ file.size }}</td>
+                                <td>{{ file.uploaded }}</td>
+                                <td class="actions">
+                                    <a class="btn secondary small" href="{{ url_for('download_file', filename=file.name) }}">Download</a>
+                                    <form action="{{ url_for('delete_file', filename=file.name) }}" method="POST" onsubmit="return confirm('Delete {{ file.name }}?');">
+                                        <button class="btn danger small" type="submit">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <div class="empty-icon">☁</div>
+                    <h3>No files uploaded yet</h3>
+                    <p>Upload a file above and it will appear here.</p>
+                </div>
+            {% endif %}
+        </section>
+
+        <section class="architecture">
+            <p class="section-kicker">SYSTEM ARCHITECTURE</p>
+            <div class="flow">
+                <div class="node">Client Browser</div>
+                <div class="arrow">→<span>HTTP / TCP/IP</span></div>
+                <div class="node">Flask Server</div>
+                <div class="arrow">→<span>Read / Write</span></div>
+                <div class="node">File Storage</div>
+            </div>
+        </section>
+
+        <footer>
+            CN Practical 10 • Cloud Computing / Networking Mini Project
+        </footer>
+    </div>
+</body>
+</html>
